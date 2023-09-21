@@ -1,4 +1,9 @@
-const Product = ({ title, price, quantity }) => {
+const Product = ({ id, title, price, quantity, onDelete }) => {
+  const handleDelete = (e) => {
+    e.preventDefault()
+    onDelete(id)
+  }
+
   return (
     <div className="product-details">
       <h3>{title}</h3>
@@ -8,7 +13,7 @@ const Product = ({ title, price, quantity }) => {
         <button className="add-to-cart">Add to Cart</button>
         <button className="edit">Edit</button>
       </div>
-      <button className="delete-button"><span>X</span></button>
+      <button className="delete-button" onClick={handleDelete} ><span>X</span></button>
     </div>
   )
 }
