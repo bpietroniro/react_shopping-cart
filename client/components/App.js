@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
 
-import mockData from "../mockData/data"
 import ProductList from "./ProductList"
 import Cart from "./Cart"
 import AddProductForm from "./AddProductForm"
@@ -32,8 +30,8 @@ const App = () => {
 
   const handleDelete = async (productId) => {
     try {
-      const data = await deleteProductById(productId)
-      setProducts(products.filter(p => p.id != productId))
+      await deleteProductById(productId)
+      setProducts(products.filter(p => p._id !== productId))
     } catch (e) {
       console.log(e)
     }
