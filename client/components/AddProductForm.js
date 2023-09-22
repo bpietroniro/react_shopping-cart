@@ -1,25 +1,19 @@
 import { useState } from "react"
 
-const AddCommentForm = ({ onSubmit }) => {
+const AddProductForm = ({ onSubmit }) => {
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
   const [quantity, setQuantity] = useState("")
   
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ title, price, quantity}, resetAndHideAddForm);
+    onSubmit({ title, price, quantity}, reset);
   }
 
   const reset = () => {
     setTitle("");
     setPrice("");
     setQuantity("");
-  }
-  
-  const resetAndHideAddForm = () => {
-    document.querySelector('form').reset();
-    reset() // is this necessary?
-    document.querySelector('.add-form').classList.remove('visible')
   }
 
   return (
@@ -65,4 +59,4 @@ const AddCommentForm = ({ onSubmit }) => {
   )
 }
 
-export default AddCommentForm
+export default AddProductForm

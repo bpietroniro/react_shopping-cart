@@ -3,10 +3,11 @@ import { useEffect, useState } from "react"
 import ProductList from "./ProductList"
 import Cart from "./Cart"
 import AddProductForm from "./AddProductForm"
-import { getProducts, createProduct, deleteProductById } from "../services/products"
+import { getProducts, createProduct, deleteProductById, updateProductById } from "../services/products"
 
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [addMode, setAddMode] = useState(false)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,6 +24,7 @@ const App = () => {
       if (callback) {
         callback();
       }
+      setAddMode(false)
     } catch (e) {
       console.log(e)
     }
@@ -37,9 +39,20 @@ const App = () => {
     }
   }
 
-  const showAddForm = () => {
-    document.querySelector('.add-form').classList.add('visible')
+  const handleUpdate = async (productId, updatedProduct) => {
+    try {
+      const data = await updateProductById(productId, updatedProduct)
+      setProducts(products.map(p => p._id !== productId ? p : data))
+    } catch (e) {
+      console.log(e)
+    }
   }
+
+  const showAddForm = () => {
+    setAddMode(true)
+  }
+
+  const addFormVisible = addMode ? "add-form visible" : "add-form"
 
   return (
     <div id="app">
@@ -50,16 +63,16 @@ const App = () => {
       <main>
         <h2>Products</h2>
         <div className="product-listing">
-          <ProductList onDelete={handleDelete} products={products} />
+          <ProductList onDelete={handleDelete} onUpdate={handleUpdate} products={products} />
         </div>
-        <div className="add-form">
+        <div className={addFormVisible}>
           <p>
             <button className="add-product-button" onClick={showAddForm}>
             Add a Product
             </button>
           </p>
           <h3>Add Product</h3>
-          <AddProductForm onSubmit={handleAddProduct} />
+          { addMode && <AddProductForm onSubmit={handleAddProduct} /> }
         </div>
       </main>
     </div>

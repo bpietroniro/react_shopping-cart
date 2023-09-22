@@ -2,7 +2,8 @@ import axios from 'axios'
 import {
   GET_PRODUCTS,
   CREATE_PRODUCT,
-  deleteProduct
+  deleteProduct,
+  updateProduct
 } from "../constants/routes"
 
 export const getProducts = async () => {
@@ -16,7 +17,11 @@ export const createProduct = async (newProduct) => {
 }
 
 export const deleteProductById = async (productId) => {
-  console.log(`url: ${deleteProduct(productId)}`)
   const { data } = await axios.delete(deleteProduct(productId))
   return data
+}
+
+export const updateProductById = async (productId, updatedProduct) => {
+  const { data } = await axios.put(updateProduct(productId), { ...updatedProduct })
+  return data 
 }

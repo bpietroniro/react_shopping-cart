@@ -1,12 +1,12 @@
 import Product from "./Product"
 
-const ProductList = ({ products, onDelete }) => {
+const ProductList = ({ products, onDelete, onUpdate }) => {
   return (
     <ul className="product-list">
-      {products.map(({ _id, title, price, quantity }) => {
+      {products.map((product) => {
         return (
-          <li key={_id} className="product">
-            <Product id={_id} title={title} price={price} quantity={quantity} onDelete={onDelete} />
+          <li key={product._id} className="product">
+            <Product product={product} onDelete={onDelete} onUpdate={onUpdate} />
           </li>
         )
       })}
