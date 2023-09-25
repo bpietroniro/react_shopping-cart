@@ -1,11 +1,16 @@
 import { useState } from 'react'
 
-const Product = ({ product, onDelete, onUpdate }) => {
+const Product = ({ product, onDelete, onUpdate, onAdd }) => {
   const [editMode, setEditMode] = useState(false)
 
   const handleDelete = (e) => {
     e.preventDefault()
     onDelete(product._id)
+  }
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    onAdd(product._id)
   }
 
   const showEditForm = () => {
@@ -93,7 +98,7 @@ const Product = ({ product, onDelete, onUpdate }) => {
       <p className="price">${product.price}</p>
       <p className="quantity">{product.quantity} left in stock</p>
       <div className="actions product-actions">
-        <button className="add-to-cart">Add to Cart</button>
+        <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
         <button className="edit" onClick={showEditForm}>Edit</button>
       </div>
       { editMode && <EditForm /> }

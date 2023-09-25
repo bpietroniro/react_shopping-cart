@@ -3,18 +3,27 @@ import { useEffect, useState } from "react"
 import ProductList from "./ProductList"
 import Cart from "./Cart"
 import AddProductForm from "./AddProductForm"
-import { getProducts, createProduct, deleteProductById, updateProductById } from "../services/products"
+import { getProducts, createProduct, deleteProductById, updateProductById, getCart, addItemToCart, checkout } from "../services/products"
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [addMode, setAddMode] = useState(false)
+  const [cart, setCart] = useState([]);
+  const [addMode, setAddMode] = useState(false);
 
+  const fetchProducts = async () => {
+    const data = await getProducts();
+    setProducts(data);
+  }
+
+  const fetchCartItems = async () => {
+    const data = await getCart();
+    setCart(data);
+  }
+
+  // fetchProducts, fetchCartItems => dependency array
   useEffect(() => {
-    const fetchProducts = async () => {
-      const data = await getProducts();
-      setProducts(data);
-    }
     fetchProducts();
+    fetchCartItems();
   }, [])
 
   const handleAddProduct = async (newProduct, callback) => {
@@ -48,6 +57,25 @@ const App = () => {
     }
   }
 
+  const addToCart = async (productId) => {
+    try {
+      const data = await addItemToCart(productId)
+      fetchProducts();
+      fetchCartItems();
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleCheckout = async () => {
+    try {
+      await checkout();
+      setCart([]);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const showAddForm = () => {
     setAddMode(true)
   }
@@ -58,12 +86,12 @@ const App = () => {
     <div id="app">
       <header>
         <h1>The Shop!</h1>
-        <Cart />
+        <Cart items={cart} onCheckout={handleCheckout} />
       </header>
       <main>
         <h2>Products</h2>
         <div className="product-listing">
-          <ProductList onDelete={handleDelete} onUpdate={handleUpdate} products={products} />
+          <ProductList onDelete={handleDelete} onUpdate={handleUpdate} onAdd={addToCart} products={products} />
         </div>
         <div className={addFormVisible}>
           <p>
