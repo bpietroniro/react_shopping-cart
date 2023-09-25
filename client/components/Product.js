@@ -2,32 +2,10 @@ import { useState } from 'react'
 
 const Product = ({ product, onDelete, onUpdate }) => {
   const [editMode, setEditMode] = useState(false)
-  const [title, setTitle] = useState("")
-  const [price, setPrice] = useState("")
-  const [quantity, setQuantity] = useState("")
-
-  const handleChange = (e) => {
-    switch (e.target.id) {
-      case "product-name":
-        setTitle(e.target.value)
-        break;
-      case "product-price":
-        setPrice(e.target.value)
-        break;
-      case "product-quantity":
-        setQuantity(e.target.value)
-        break;
-    }
-  }
 
   const handleDelete = (e) => {
     e.preventDefault()
     onDelete(product._id)
-  }
-
-  const handleUpdate = (e) => {
-    e.preventDefault()
-    onUpdate(product._id, { title, price, quantity})
   }
 
   const showEditForm = () => {
@@ -39,6 +17,30 @@ const Product = ({ product, onDelete, onUpdate }) => {
   }
 
   const EditForm = () => {
+    const [title, setTitle] = useState(product.title)
+    const [price, setPrice] = useState(product.price)
+    const [quantity, setQuantity] = useState(product.quantity)
+
+    const handleChange = (e) => {
+      switch (e.target.id) {
+        case "product-name":
+          setTitle(e.target.value)
+          break;
+        case "product-price":
+          setPrice(e.target.value)
+          break;
+        case "product-quantity":
+          setQuantity(e.target.value)
+          break;
+      }
+    }
+
+    const handleUpdate = (e) => {
+      e.preventDefault()
+      onUpdate(product._id, { title, price, quantity})
+      setEditMode(false)
+    } 
+
     return (
       <div className="edit-form">
         <h3>Edit Product</h3>
@@ -48,7 +50,7 @@ const Product = ({ product, onDelete, onUpdate }) => {
             <input
               type="text"
               id="product-name"
-              defaultValue={product.title}
+              value={title}
               aria-label="Product Name"
               onChange={handleChange}
             />
@@ -59,7 +61,7 @@ const Product = ({ product, onDelete, onUpdate }) => {
             <input
               type="number"
               id="product-price"
-              defaultValue={price}
+              value={price}
               aria-label="Product Price"
               onChange={handleChange}
             />
@@ -70,7 +72,7 @@ const Product = ({ product, onDelete, onUpdate }) => {
             <input
               type="number"
               id="product-quantity"
-              defaultValue={product.quantity}
+              value={quantity}
               aria-label="Product Quantity"
               onChange={handleChange}
             />
