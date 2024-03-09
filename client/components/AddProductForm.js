@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const AddProductForm = ({ onSubmit }) => {
+const AddProductForm = ({ onSubmit, onCancel }) => {
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
   const [quantity, setQuantity] = useState("")
@@ -8,6 +8,12 @@ const AddProductForm = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
     onSubmit({ title, price, quantity}, reset);
+  }
+
+  const handleCancel = e => {
+    e.preventDefault();
+    reset();
+    onCancel();
   }
 
   const reset = () => {
@@ -53,7 +59,7 @@ const AddProductForm = ({ onSubmit }) => {
       </div>
       <div className="actions form-actions">
         <button type="submit">Add</button>
-        <button type="button" onClick={resetAndHideAddForm}>Cancel</button>
+        <button type="button" onClick={handleCancel}>Cancel</button>
       </div>
     </form>
   )

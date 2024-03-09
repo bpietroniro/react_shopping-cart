@@ -80,6 +80,10 @@ const App = () => {
     setAddMode(true)
   }
 
+  const hideAddForm = () => {
+    setAddMode(false)
+  }
+
   const addFormVisible = addMode ? "add-form visible" : "add-form"
 
   return (
@@ -100,7 +104,7 @@ const App = () => {
             </button>
           </p>
           <h3>Add Product</h3>
-          { addMode && <AddProductForm onSubmit={handleAddProduct} /> }
+          { addMode && <AddProductForm onSubmit={handleAddProduct} onCancel={hideAddForm} /> }
         </div>
       </main>
     </div>
